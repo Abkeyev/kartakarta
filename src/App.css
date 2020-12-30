@@ -1,0 +1,10 @@
+@media (max-width: 320px) {
+  .makeStyles-root-1 {
+    background-size: cover !important;
+    background-position-y: top !important;
+    height: 450px !important;
+  }
+  .makeStyles-buttonOrderCard-8 {
+    font-size: 13px !important;
+  }
+}
