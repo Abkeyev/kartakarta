@@ -268,7 +268,7 @@ const OldCardOrder = (props: any) => {
   };
 
   const getOtp = () => {
-    if (phoneNumber.substr(2, 1) !== "7") {
+    if (phoneNumber.substr(3, 1) !== "7") {
       setPhoneError(true);
       return;
     } else setPhoneError(false);

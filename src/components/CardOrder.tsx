@@ -461,13 +461,13 @@ const CardOrder = (props: any) => {
   };
 
   const formatPhoneNumber = () => {
-    let res = phoneNumber;
+    let res = phoneNumber.replace(/\+/g, "");
     if (phoneNumber.slice(0, 1) === "8") res = "7" + phoneNumber.slice(1);
     return res.replace(/\(|\)| /g, "");
   };
 
   const getOtp = () => {
-    if (phoneNumber.substr(2, 1) !== "7") {
+    if (phoneNumber.substr(3, 1) !== "7") {
       setPhoneError(true);
       return;
     } else setPhoneError(false);

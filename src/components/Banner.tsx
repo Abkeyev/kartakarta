@@ -766,12 +766,16 @@ const Banner = () => {
             <Grid className={classes.modalMain}>
               <Grid className={classes.modalTitle}>
                 <h3 style={{ marginBottom: 10 }}>{t("banners_5.text_100")}</h3>
+                <p style={{ marginBottom: 10 }}>{t("banners_5.text_101")}</p>
                 <p style={{ marginBottom: "5px" }}>{t("banners_5.text_0")}</p>
                 <p style={{ marginBottom: "5px" }}>{t("banners_5.text_1")}</p>
                 <p style={{ marginBottom: "5px" }}>{t("banners_5.text_2")}</p>
                 <p style={{ marginBottom: "5px" }}>{t("banners_5.text_3")}</p>
                 <p style={{ marginBottom: "5px" }}>{t("banners_5.text_4")}</p>
-                <p> {t("banners_5.text_5")} </p>
+                <p style={{ marginBottom: "5px" }}>{t("banners_5.text_5")}</p>
+                <p style={{ marginBottom: "5px" }}>{t("banners_5.text_6")}</p>
+                <p> {t("banners_5.text_7")} </p>
+                <p> {t("banners_5.text_8")} </p>
               </Grid>
             </Grid>
           </Grid>
