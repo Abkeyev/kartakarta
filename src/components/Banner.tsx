@@ -401,14 +401,7 @@ const Banner = () => {
             }}
           />
         </Grid>
-        {/* <Grid className={classes.fixedRoot}>
-          <img
-            src={t("banners_4.img")}
-            onClick={() => {
-              setOpen7(true);
-            }}
-          />
-        </Grid> */}
+        
         <Grid className={classes.fixedRoot}>
           <img
             src={t("banners.banner-1")}
@@ -417,24 +410,6 @@ const Banner = () => {
             }}
           />
         </Grid>
-
-        {/*<Grid className={classes.fixedRoot}>
-          <img
-            src={t("banners_3.img")}
-            onClick={() => {
-              setOpen6(true);
-            }}
-          />
-        </Grid> 
-
-        <Grid className={classes.fixedRoot}>
-          <img
-            src="bannerMain-25.svg"
-            onClick={() => {
-              setOpen5(true);
-            }}
-          />
-        </Grid>*/}
 
         <Grid className={classes.fixedRoot}>
           <img
@@ -453,16 +428,6 @@ const Banner = () => {
             }}
           />
         </Grid>
-
-        {/* <Grid className={classes.fixedRoot}>
-          <img
-            src="bannerMain-22.svg"
-            onClick={() => {
-              setOpen(true);
-            }}
-          />
-        </Grid> */}
-
 
 
         <Grid className={`${classes.fixedModal} ${open ? classes.open : ""}`}>

@@ -191,7 +191,7 @@ const Header = (props: any) => {
               <div className={classes.logo_div}>
                 <img
                   className={classes.logo_img}
-                  src="logo-bcc.svg"
+                  src="white-new-logo.svg"
                   alt="logo-bcc"
                 />
               </div>
