@@ -188,13 +188,13 @@ const Header = (props: any) => {
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
           <Grid container>
             <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-              <div className={classes.logo_div}>
+              <a href="http://bcc.kz/" className={classes.logo_div}>
                 <img
                   className={classes.logo_img}
                   src="white-new-logo.svg"
                   alt="logo-bcc"
                 />
-              </div>
+              </a>
             </Grid>
             <Grid
               item

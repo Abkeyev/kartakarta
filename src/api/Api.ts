@@ -16,6 +16,8 @@ export class Api {
 export interface OrderRequest {
   fio?: string;
   phoneNumber?: string;
+  iin?: string;
+  message?: string;
 }
 
 function uuid() {
@@ -45,11 +47,11 @@ export class CardController {
       type: "REQUEST",
       attributes: {
         data: {
-          type: "SMARTCALL",
-          systemId: "c274fb89-0d53-4304-95e9-130b267cd326",
+          type: "EXT_SITE",
+          systemId: "6e438029-c144-4d23-9dd8-08c22761222c",
           name: request.fio, //---------------------FIO
           phone: request.phoneNumber, //------------PhoneNumber
-          iinBin: null,
+          iinBin: request.iin,
           organizationName: null,
           email: null,
           callTime: moment().format("HH:mm"), //--------------CallTime
@@ -57,7 +59,7 @@ export class CardController {
           productService: {
             productName: "#картакарта",
             productCode: "0.300.1400.10",
-            productDescription: "Кредитная карта - рассрочка #картакарта",
+            productDescription: request.message,
           },
         },
       },

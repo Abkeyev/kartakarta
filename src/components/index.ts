@@ -13,3 +13,4 @@ export { default as Footer } from "./Footer";
 export { default as Banner } from "./Banner";
 export { default as FixedHeader } from "./FixedHeader";
 export { default as Loading } from "./Loading";
+export { default as BccTypography } from "./BccTypography/BccTypography";

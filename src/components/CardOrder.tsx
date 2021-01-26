@@ -18,39 +18,107 @@ import InputMask from "react-input-mask";
 import ym from "react-yandex-metrika";
 import { useTranslation } from "react-i18next";
 import BlockUi from "react-block-ui";
-import { Snackbar, MenuItem } from "@material-ui/core";
+import { Snackbar, MenuItem, InputAdornment } from "@material-ui/core";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import "react-block-ui/style.css";
 import moment from "moment";
-import * as Scroll from "react-scroll";
+import { BccTypography } from "./";
 
 const webConfigEnv = (window as any).env;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.between("md", "xl")]: {
       root: {
         padding: "36px 20px 36px 20px",
+        maxWidth: 1280,
+        width: 750,
+        margin: "auto",
+      },
+      paper: {
+        padding: "72px 36px",
+        background: "#FFFFFF",
+        border: "2px solid #FAFAFA",
+        boxSizing: "border-box",
+        borderRadius: "8px",
+        position: "relative",
+      },
+      icon: {
+        width: "18px",
+        height: "19px",
+      },
+      box: {
+        textAlign: "center",
+        fontWeight: 'bold',
+        fontSize: "56px",
+        lineHeight: "64px",
+        marginBottom: "24px",
+      },
+      formControlCheckBox: {
+        marginTop: "25px",
+      },
+      checkBoxLabel: {
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: 16,
+        color: "black",
+      },
+      garant: {
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: 14,
+      },
+      submit: {
+        background: "#3F0259",
+        borderRadius: "8px",
+        fontSize: "20px",
+        lineHeight: "28px",
+        fontWeight: "500",
+        fontStyle: "normal",
+        textTransform: "none",
+        boxShadow: "none",
+        height: "62px",
+        color: "#FFFFFF",
+        "&:hover, &:active": {
+          backgroundColor: "#3F0259",
+          opacity: 0.8,
+          boxShadow: "none",
+          color: "#FFFFFF",
+        },
+        "&:disabled": {
+          backgroundColor: "#3F0259",
+          opacity: 0.6,
+          boxShadow: "none",
+          color: "#FFFFFF",
+        },
+      },
+    },
+    [theme.breakpoints.down("sm")]: {
+      root: {
+        padding: "36px",
         alignItems: "center",
         margin: "auto",
-        width: "80%",
+        width: "100%",
       },
       icon: {
         width: "18px",
         height: "19px",
       },
       paper: {
-        padding: "22px 16px 22px 16px",
+        padding: "48px 24px 24px",
         backgroundColor: "white",
         border: "1px solid #E8E8E8",
         boxSizing: "border-box",
         borderRadius: 8,
+        position: "relative",
+        width: "100%",
       },
       box: {
         textAlign: "center",
+        fontSize: "28px",
         fontWeight: "bold",
-        fontSize: "20px",
-        lineHeight: "20px",
+        lineHeight: "28px",
+        marginBottom: "24px",
       },
       formControlCheckBox: {
         marginTop: "20px",
@@ -91,74 +159,19 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
-    [theme.breakpoints.between("md", "xl")]: {
+    [theme.breakpoints.down("xs")]: {
       root: {
-        padding: "36px 20px 36px 20px",
-        maxWidth: 1280,
-        width: "50%",
-        margin: "auto",
-      },
-      paper: {
-        padding: "45px 72px 45px 72px",
-        background: "#FFFFFF",
-        border: "2px solid #FAFAFA",
-        boxSizing: "border-box",
-        borderRadius: "8px",
-      },
-      icon: {
-        width: "18px",
-        height: "19px",
-      },
-      box: {
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: "40px",
-        lineHeight: "40px",
-        marginBottom: "27px",
-      },
-      formControlCheckBox: {
-        marginTop: "25px",
-      },
-      checkBoxLabel: {
-        fontStyle: "normal",
-        fontWeight: "normal",
-        fontSize: 16,
-        color: "black",
-      },
-      garant: {
-        fontStyle: "normal",
-        fontWeight: "normal",
-        fontSize: 14,
-      },
-      submit: {
-        background: "#3F0259",
-        borderRadius: "8px",
-        fontSize: "20px",
-        lineHeight: "28px",
-        fontWeight: "500",
-        fontStyle: "normal",
-        textTransform: "none",
-        boxShadow: "none",
-        height: "62px",
-        color: "#FFFFFF",
-        "&:hover, &:active": {
-          backgroundColor: "#3F0259",
-          borderColor: "#3F0259",
-          opacity: 0.8,
-          boxShadow: "none",
-          color: "#FFFFFF",
-        },
-        "&:disabled": {
-          backgroundColor: "#3F0259",
-          opacity: 0.6,
-          boxShadow: "none",
-          color: "#FFFFFF",
-        },
+        padding: "20px",
       },
     },
-
-    [theme.breakpoints.down("sm")]: {
-      root: { width: "90%" },
+    eraser: {
+      width: 25,
+      height: 25,
+      opacity: 0.8,
+      cursor: "pointer",
+      "&:hover": {
+        opacity: 1,
+      },
     },
     timer: {
       fontSize: 16,
@@ -180,11 +193,14 @@ const useStyles = makeStyles((theme: Theme) =>
         boxSizing: "border-box",
       },
     },
+    stepperForm: {
+      borderRadius: 8,
+      minHeight: 450,
+    },
     successForm: {
       padding: "30px",
-      marginTop: 64,
+      marginTop: 32,
       borderRadius: 8,
-      backgroundColor: "rgba(125, 206, 160, 0.2)",
       textAlign: "center",
       "& > img": {
         display: "block",
@@ -206,12 +222,33 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     warningForm: {
-      backgroundColor: "rgba(200, 79, 79, 0.05)",
+      marginTop: 32,
+      borderRadius: 8,
       "& > div": {
-        color: "#000D1A",
-        fontSize: 16,
-        fontWeight: "normal",
-        marginBottom: 60,
+        [theme.breakpoints.down("xs")]: {
+          flexDirection: "column",
+          alignItems: "center",
+        },
+        "& > div:first-child": {
+          paddingRight: 32,
+          [theme.breakpoints.down("xs")]: {
+            paddingRight: 0,
+            paddingBottom: 12,
+          },
+        },
+        "& > div > div": {
+          border: "1px solid #F3F3F3",
+          padding: "12px 24px",
+          borderRadius: 8,
+          maxWidth: "max-content",
+          [theme.breakpoints.down("xs")]: {
+            maxWidth: "none",
+            justifyContent: "center",
+          },
+          "& > div:first-child": {
+            paddingRight: 12,
+          },
+        },
       },
     },
     starbankingForm: {
@@ -256,10 +293,216 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     hintText: {
-      fontSize: 14,
+      fontSize: 28,
+      lineHeight: "34px",
       textAlign: "center",
-      color: "#141414",
-      opacity: 0.7,
+      fontWeight: 600,
+      marginBottom: 12,
+    },
+    hintText2: {
+      fontSize: 16,
+      lineHeight: "20px",
+      textAlign: "center",
+      color: "#4D565F",
+      marginBottom: 24,
+      "& > a": {
+        color: "#27AE60",
+      },
+      [theme.breakpoints.down("xs")]: {
+        marginBottom: 8,
+      },
+    },
+    closeBtn: {
+      position: "absolute",
+      right: 16,
+      top: 16,
+      cursor: "pointer",
+      [theme.breakpoints.down("xs")]: {
+        width: 35,
+        height: 35,
+      },
+    },
+    stepWrap: {
+      display: "flex",
+      flexWrap: "nowrap",
+      justifyContent: "space-between",
+      paddingLeft: "48px",
+      boxSizing: "border-box",
+      margin: "0 auto",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+        flexDirection: "column-reverse",
+        alignItems: "center",
+      },
+    },
+    stepText: {
+      width: "55%",
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
+    },
+    stepGif: {
+      position: "absolute",
+      right: "calc(50% - 320px)",
+      width: 300,
+      height: 300,
+      "& > img": {},
+      [theme.breakpoints.down("sm")]: {
+        right: "32px",
+        width: 250,
+        height: 250,
+      },
+      [theme.breakpoints.down("xs")]: {
+        position: "relative",
+        right: "initial",
+        marginBottom: 12,
+        "& > img": {
+          width: "100%",
+          height: "100%",
+        },
+      },
+    },
+    img: {
+      position: "absolute",
+      right: 0,
+      top: 0,
+      opacity: 0,
+      transition: "all .75s ease-out",
+      transform: "translateY(0)",
+    },
+    up: {
+      transform: "translateY(200px)",
+      opacity: 0,
+    },
+    down: {
+      transform: "translateY(-200px)",
+      opacity: 0,
+    },
+    visible: {
+      transform: "translateY(0)",
+      opacity: 1,
+    },
+    appLinks: {
+      position: "absolute",
+      bottom: 92,
+      [theme.breakpoints.down("xs")]: {
+        position: "relative",
+        bottom: "initial",
+      },
+      "& > div": {
+        width: 160,
+        marginRight: 12,
+        [theme.breakpoints.down("xs")]: {
+          width: "90%",
+          margin: "0 auto",
+          flexDirection: "row",
+          flexWrap: "nowrap",
+          "& > img": {
+            marginBottom: 0,
+            width: "calc(50% - 6px)!important",
+          },
+          "& > img:first-child": {
+            marginRight: 12,
+            marginBottom: "0!important",
+          },
+        },
+        "& > img:first-child": {
+          marginBottom: 12,
+        },
+        "& > img": {
+          width: "100%",
+        },
+      },
+      "& > img": {
+        width: 104,
+      },
+    },
+    social: {
+      marginTop: 80,
+      [theme.breakpoints.down("xs")]: {
+        marginTop: 40,
+      },
+      "& > div:first-child": {
+        paddingRight: 36,
+      },
+      "& > div > a:last-child": {
+        marginRight: 0,
+      },
+      "& > div > a": {
+        display: "inline-block",
+        marginRight: 16,
+        "& > img": {
+          width: 32,
+          height: 32,
+        },
+      },
+    },
+    stepper: {
+      display: "flex",
+      flexDirection: "column",
+      position: "absolute",
+      left: "calc(50% - 300px)",
+      alignItems: "center",
+      color: "white",
+      [theme.breakpoints.down("sm")]: {
+        left: "32px",
+      },
+      [theme.breakpoints.down("xs")]: {
+        left: 36,
+        top: "calc(50% - 120px)",
+      },
+      "& > div": {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "absolute",
+        width: 18,
+        "& > div:nth-child(2n)": {
+          height: 120,
+          backgroundColor: "#E6EAF0",
+          width: 3,
+        },
+        "& > div.active:nth-child(2n)": {
+          height: 120,
+          backgroundColor: "#3F0259",
+          width: 3,
+        },
+        "& > div:nth-child(2n+1)": {
+          width: 34,
+          height: 34,
+          backgroundColor: "#F3F3F3",
+          color: "#B3B6BA",
+          borderRadius: 17,
+          lineHeight: "34px",
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: 16,
+          cursor: "pointer",
+        },
+        "& > div.active:nth-child(2n+1)": {
+          border: "none",
+          backgroundColor: "#3F0259",
+          color: "white",
+          lineHeight: "34px",
+        },
+      },
+    },
+    inTitle: {
+      [theme.breakpoints.down("xs")]: {
+        display: "none!important",
+      },
+    },
+    inSubTitle: {
+      [theme.breakpoints.down("xs")]: {
+        color: "#000D1A!important",
+        opacity: 0.7,
+        textAlign: "center",
+      },
+    },
+    qr: {
+      [theme.breakpoints.down("xs")]: {
+        display: "none",
+      },
     },
   })
 );
@@ -268,11 +511,7 @@ const Alert = (props: any) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 
-interface TextMaskCustomProps {
-  inputRef: (ref: HTMLInputElement | null) => void;
-}
-
-const BccMaskedInput = (props: TextMaskCustomProps) => {
+const BccMaskedInput = (props: {inputRef: (ref: HTMLInputElement | null) => void}) => {
   const { inputRef, ...other } = props;
 
   return (
@@ -285,10 +524,9 @@ const BccMaskedInput = (props: TextMaskCustomProps) => {
   );
 };
 
+
 const CardOrder = (props: any) => {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [middleName, setMiddleName] = React.useState("");
+  const [fio, setFio] = React.useState("");
   const [step, setStep] = React.useState(0);
   const [iin, setIin] = React.useState("");
   const [code, setCode] = React.useState("");
@@ -296,7 +534,7 @@ const CardOrder = (props: any) => {
   const [agree, setAgree] = React.useState<boolean>(true);
   const [phoneError, setPhoneError] = React.useState<boolean>(false);
   const [timer, setTimer] = React.useState(0);
-  const [resStatus, setResStatus] = React.useState<number | null>(null);
+  const [resStatus, setResStatus] = React.useState<number | null>(3);
   const [isLoading, setLoading] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
   const classes = useStyles({});
@@ -304,11 +542,17 @@ const CardOrder = (props: any) => {
   const theme = useTheme();
   const isXS = useMediaQuery(theme.breakpoints.down("sm"));
   const [city, setCity] = React.useState("");
+  const [stepSuccess, setStepSuccess] = React.useState(1);
+  const [scrolled, setScrolled] = React.useState(false);
+  const [up, setUp] = React.useState(false);
+
   const cities = [
+    "Нур-Султан",
+    "Алматы",
+    "Шымкент",
     "Актау",
     "Жанаозен",
     "Актобе",
-    "Алматы",
     "Атырау",
     "Кульсары",
     "Жезказган",
@@ -323,7 +567,6 @@ const CardOrder = (props: any) => {
     "Затобольск",
     "Кызылорда",
     "Шиели",
-    "Нур-Султан",
     "Павлодар",
     "Экибастуз",
     "Петропавловск",
@@ -344,7 +587,6 @@ const CardOrder = (props: any) => {
     "Зайсан",
     "Алтай",
     "Риддер",
-    "Шымкент",
     "Сарыагаш",
     "Аксу",
   ];
@@ -361,8 +603,6 @@ const CardOrder = (props: any) => {
   const isValid = () => {
     if (step === 0) {
       return (
-        firstName.length > 1 &&
-        lastName.length > 1 &&
         iin.length === 12 &&
         city.length > 1 &&
         phoneNumber.replace("_", "").length === 17 &&
@@ -376,7 +616,7 @@ const CardOrder = (props: any) => {
   };
 
   function uuid() {
-    return "xxxxxx".replace(/[xy]/g, function (c) {
+    return "xxxxxx".replace(/[xy]/g, function(c) {
       var r = (Math.random() * 16) | 0,
         v = c === "x" ? r : (r & 0x3) | 0x8;
       return v.toString();
@@ -392,11 +632,16 @@ const CardOrder = (props: any) => {
       : decodeURIComponent(results[1].replace(/\+/g, " "));
   }
 
+  const getFio = (num: number) => {
+    const fioArray = fio.split(" ");
+    return fioArray && fioArray[num] ? fioArray[num] : "";
+  };
+
   const startProcess = () => {
     const formData = new FormData();
 
     formData.append("TELEPHONE", phoneNumber);
-    formData.append("NAME", `${firstName} ${lastName}`);
+    formData.append("NAME", fio);
     formData.append("BRANCH", city);
     formData.append("IIN", iin);
     formData.append("SYSTEM_TITLE", "#kartakarta");
@@ -428,9 +673,9 @@ const CardOrder = (props: any) => {
         },
         client: {
           iin: iin,
-          firstName: firstName,
-          middleName: middleName,
-          lastName: lastName,
+          firstName: getFio(1),
+          middleName: getFio(2),
+          lastName: getFio(0),
           msisdn: formatPhoneNumber(),
           city: city,
           productCode: "0.300.017.1",
@@ -447,12 +692,25 @@ const CardOrder = (props: any) => {
         props.scrollToOrder(false);
         if (res && res.variables) {
           setResStatus(res.variables.status);
+          if (res.variables.status !== 3) {
+            api.card
+              .order({
+                fio: `${fio} [${city}]`,
+                phoneNumber: formatPhoneNumber(),
+                iin,
+                message: res.variables.message,
+              })
+              .then((r) => console.log(r))
+              .catch((e) => console.log(e));
+          }
         }
         setStep(2);
         ym("reachGoal", "send_mess");
         setLoading(false);
       })
       .catch((e: any) => {
+        setStep(2);
+        setResStatus(1);
         props.scrollToOrder(false);
         console.error(e);
         setOpenError(true);
@@ -461,7 +719,9 @@ const CardOrder = (props: any) => {
   };
 
   const formatPhoneNumber = () => {
-    let res = phoneNumber.replace(/\+/g, "");
+    let res = phoneNumber.replace(/\+/, '');
+    console.log(res)
+    console.log(res.replace(/\(|\)| /g, ""))
     if (phoneNumber.slice(0, 1) === "8") res = "7" + phoneNumber.slice(1);
     return res.replace(/\(|\)| /g, "");
   };
@@ -556,8 +816,67 @@ const CardOrder = (props: any) => {
     );
   };
 
+  const handleScroll = (e: any) => {
+    if (step <= 1 && resStatus && resStatus > 0) return;
+    if (scrolled) return;
+    if (e.nativeEvent.wheelDelta > 0) {
+      console.log(stepSuccess);
+      if (stepSuccess === 1) {
+        console.log(stepSuccess, "1");
+        return (document.body.style.overflow = "unset");
+      } else {
+        console.log(stepSuccess, "11");
+        setStepSuccess(stepSuccess - 1);
+        setUp(true);
+        setScrolled(true);
+        setTimeout(() => {
+          setScrolled(false);
+        }, 1000);
+        return stepSuccess - 1 >= 1
+          ? (document.body.style.overflow = "hidden")
+          : "";
+      }
+    } else {
+      if (stepSuccess === 3) {
+        console.log(stepSuccess);
+        console.log(stepSuccess, "2");
+        return (document.body.style.overflow = "unset");
+      } else {
+        console.log(stepSuccess, "22");
+        setStepSuccess(stepSuccess + 1);
+        setUp(false);
+        setScrolled(true);
+        setTimeout(() => {
+          setScrolled(false);
+        }, 1000);
+        return stepSuccess + 1 <= 3
+          ? (document.body.style.overflow = "hidden")
+          : "";
+      }
+    }
+  };
+
   const handleClose = () => {
     setOpenError(false);
+  };
+
+  const getWpUrl = () => {
+    return `https://wa.me/${"77012230228"}?text=${encodeURIComponent(
+      `Хочу открыть #картакарта, возникла ошибка. ИИН - ${iin}`
+    )}`;
+  };
+
+  const getFioByIin = (iinNum: string) => {
+    api.camunda
+      .getFioByIin(iinNum)
+      .then((res) => {
+        if (res && res.data && res.data[0] && res.data[0].fio) {
+          setFio(res.data[0].fio);
+        }
+      })
+      .catch((err) => {
+        setFio("");
+      });
   };
 
   return (
@@ -570,18 +889,49 @@ const CardOrder = (props: any) => {
       direction="column"
       justify="center"
     >
-      <Paper elevation={0} className={classes.paper}>
-        <Typography className={classes.box}>
-          {t("block_6.title_main")} <br />
-          {t("block_6.title_main_12")}
-        </Typography>
-        <Typography className={classes.hintText}>
-          {step === 0
-            ? t("block_6.hint_text1")
-            : step === 1
-              ? t("block_6.hint_text2")
-              : ""}
-        </Typography>
+      <Paper
+        elevation={0}
+        className={classes.paper}
+        onWheel={step > 1 && resStatus === 0 ? handleScroll : () => {}}
+      >
+        {step > 1 && (
+          <img
+            src={process.env.PUBLIC_URL + "/images/close.svg"}
+            onClick={() => {
+              setStep(0);
+              setResStatus(null);
+              setFio("");
+              setPhoneNumber("");
+              setIin("");
+              setCity("");
+              setCode("");
+            }}
+            className={classes.closeBtn}
+          />
+        )}
+        {step === 0 && (
+          <Typography className={classes.box}>{t("block_form.title")}</Typography>
+        )}
+        {step === 0 ? (
+          <Typography className={classes.hintText}>
+            <>
+              {t("block_form.title_main")}
+              <br />
+              {t("block_form.title_main_2")}
+            </>
+          </Typography>
+        ) : step === 1 ? (
+          <Typography className={classes.hintText}>
+            {t("block_form.title2")}
+          </Typography>
+        ) : (
+          ""
+        )}
+        {step === 1 && (
+          <Typography className={classes.hintText2}>
+            {t("block_form.hint_text")}
+          </Typography>
+        )}
         <Snackbar
           anchorOrigin={{
             vertical: "top",
@@ -604,88 +954,77 @@ const CardOrder = (props: any) => {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  id="lastName"
-                  label={t("block_6.lastName_main")}
-                  name="lastName"
-                  value={lastName}
-                  onChange={(e: any) =>
-                    setLastName(
-                      e.target.value
-                        .replace(/[^a-zA-ZА-Яа-яЁёӘәІіҢңҒғҮүҰұҚқӨөҺһ]/gi, "")
-                        .replace(/\s+/gi, ", ")
-                    )
-                  }
-                />
-                <TextField
-                  size={isXS ? "small" : "medium"}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="firstName"
-                  label={t("block_6.firstName_main")}
-                  name="firstName"
-                  value={firstName}
-                  onChange={(e: any) => {
-                    setFirstName(
-                      e.target.value
-                        .replace(/[^a-zA-ZА-Яа-яЁёӘәІіҢңҒғҮүҰұҚқӨөҺһ]/gi, "")
-                        .replace(/\s+/gi, ", ")
-                    );
-                  }}
-                />
-                <TextField
-                  size={isXS ? "small" : "medium"}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="middleName"
-                  label={t("block_6.middleName_main")}
-                  name="middleName"
-                  value={middleName}
-                  onChange={(e: any) =>
-                    setMiddleName(
-                      e.target.value
-                        .replace(/[^a-zA-ZА-Яа-яЁёӘәІіҢңҒғҮүҰұҚқӨөҺһ]/gi, "")
-                        .replace(/\s+/gi, ", ")
-                    )
-                  }
-                />
-                <TextField
-                  size={isXS ? "small" : "medium"}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="iinVirtual"
-                  label={t("block_6.iin_main")}
-                  name="iin"
-                  value={iin}
-                  onChange={(e: any) =>
-                    setIin(e.target.value.replace(/\D/g, "").substr(0, 12))
-                  }
-                />
-                <TextField
-                  size={isXS ? "small" : "medium"}
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="phoneVirtual"
+                  id="phone"
                   name="phone"
-                  helperText={phoneError ? t("block_6.phone_error") : ""}
+                  type="tel"
+                  helperText={phoneError ? t("block_6.phone-error") : ""}
                   error={phoneError ? true : false}
                   value={phoneNumber}
                   onChange={(e: any) => setPhoneNumber(e.target.value)}
-                  label={t("block_6.phone_main")}
+                  label={t("block_form.phone_main")}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   InputProps={{
                     inputComponent: BccMaskedInput as any,
+                    endAdornment: phoneNumber !== "" && (
+                      <InputAdornment position="end">
+                        <img
+                          src={process.env.PUBLIC_URL + "/images/eraser.svg"}
+                          onClick={() => setPhoneNumber("")}
+                          className={classes.eraser}
+                        />
+                      </InputAdornment>
+                    ),
                   }}
                 />
                 <TextField
+                  size={isXS ? "small" : "medium"}
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="iin"
+                  type="tel"
+                  label={t("block_form.iin_main")}
+                  name="iin"
+                  value={iin}
+                  InputProps={{
+                    endAdornment: iin !== "" && (
+                      <InputAdornment position="end">
+                        <img
+                          src={process.env.PUBLIC_URL + "/images/eraser.svg"}
+                          onClick={() => setIin("")}
+                          className={classes.eraser}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={(e: any) => {
+                    setIin(e.target.value.replace(/\D/g, "").substr(0, 12));
+                    if (e.target.value.replace(/\D/g, "").length === 12) {
+                      getFioByIin(e.target.value.replace(/\D/g, ""));
+                    } else if (e.target.value.replace(/\D/g, "").length > 12) {
+                      setFio("");
+                    } else setFio("");
+                  }}
+                />
+                {fio && (
+                  <TextField
+                    size={isXS ? "small" : "medium"}
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="fio"
+                    label={t("block_form.fio")}
+                    name="fio"
+                    disabled
+                    value={fio}
+                  />
+                )}
+                <TextField
                   fullWidth={true}
-                  label={t("block_6.city") + "*"}
-                  id="cityVirtual"
+                  label={t("block_form.city") + "*"}
+                  id="city"
                   name="city"
                   value={city}
                   onChange={(e: any) => setCity(e.target.value)}
@@ -719,7 +1058,7 @@ const CardOrder = (props: any) => {
                   }
                   label={
                     <Typography className={classes.checkBoxLabel}>
-                      {t("block_6.checkbox_desc")}
+                      {t("block_form.checkbox_desc")}
                     </Typography>
                   }
                 />
@@ -735,7 +1074,7 @@ const CardOrder = (props: any) => {
                         xs={false}
                       >
                         <img
-                          src="card_order_security.svg"
+                          src={process.env.PUBLIC_URL + "/images/card_order_security.svg"}
                           className={classes.icon}
                           alt="order_security"
                         />
@@ -749,7 +1088,7 @@ const CardOrder = (props: any) => {
                         xs={true}
                       >
                         <Typography className={classes.garant}>
-                          {t("block_6.subtitle_desc")}
+                          {t("block_form.subtitle_desc")}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -762,7 +1101,7 @@ const CardOrder = (props: any) => {
                       className={classes.submit}
                       disabled={!isValid()}
                     >
-                      {t("block_6.next_main")}
+                      {t("block_form.next_main")}
                     </Button>
                   </Grid>
                 </Grid>
@@ -781,13 +1120,15 @@ const CardOrder = (props: any) => {
                       className={classes.code}
                       margin="normal"
                       fullWidth
-                      id="code"
+                      type="number"
+                      id="single-factor-code-text-field"
+                      autoComplete="one-time-code"
                       name="code"
                       value={code}
                       onChange={(e: any) =>
                         setCode(e.target.value.replace(/\D/g, "").substr(0, 6))
                       }
-                      label={t("block_6.code_main")}
+                      label={t("block_form.code_main")}
                     />
                   </Grid>
                   <Grid item xl={6} lg={6} md={6} sm={12} xs={12}>
@@ -798,81 +1139,292 @@ const CardOrder = (props: any) => {
                       className={classes.submit}
                       disabled={!isValid()}
                     >
-                      {t("block_6.confirm_main")}
+                      {t("block_form.confirm_main")}
                     </Button>
                   </Grid>
                   {timer !== 0 ? (
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                       <Typography className={classes.timer}>
-                        {t("block_6.resend_sms_timer")} ({timer})
+                        {t("block_form.resend_sms_timer")} ({timer})
                       </Typography>
                     </Grid>
                   ) : (
-                      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <Typography
-                          className={classes.linkReSendSms}
-                          onClick={() => onReSend()}
-                        >
-                          {t("block_6.resend_sms")}
-                        </Typography>
-                      </Grid>
-                    )}
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                      <Typography
+                        className={classes.linkReSendSms}
+                        onClick={() => onReSend()}
+                      >
+                        {t("block_form.resend_sms")}
+                      </Typography>
+                    </Grid>
+                  )}
                 </Grid>
               </>
-            ) : resStatus === 0 ? (
-              <div className={classes.successForm}>
-                <img src="success.svg" alt="" />
-                <div>{t("block_6.success_main")}</div>
-                <span>{t("block_6.success_sms_main")}</span>
-              </div>
-            ) : resStatus === 1 ? (
-              <div className={`${classes.successForm} ${classes.warningForm}`}>
-                <img src="warning.svg" alt="" />
-                <div>{t("block_6.warning_main")}</div>
-              </div>
-            ) : resStatus === 2 ? (
-              <div
-                className={`${classes.successForm} ${classes.starbankingForm}`}
-              >
-                <div className={classes.linkBlock}>
-                  <div className={classes.starText}>
-                    {t("block_6.start_main")}
-                    <div className={classes.starImages}>
-                      <img className={classes.starQr} src="qr.svg" alt="qr" />
-                      <img
-                        onClick={() => onClickAppStore()}
-                        src="app_store.svg"
-                        alt="app_store"
-                      />
-                      <img
-                        onClick={() => onClickGooglePlay()}
-                        src="google_play.svg"
-                        alt="google_play"
-                      />
+            ) : resStatus === 0 || resStatus === 2 ? (
+              <div className={classes.stepperForm}>
+                <Typography className={classes.hintText}>
+                  {t("block_form.success1")}
+                </Typography>
+                <Typography className={classes.hintText2}>
+                  {t("block_form.success_hint1")}{" "}
+                  <a
+                    href="https://www.bcc.kz/branches-and-atms/"
+                    target="_blank"
+                  >
+                    {t("block_form.success_hint2")}
+                  </a>
+                </Typography>
+                {step === 2 && resStatus === 0 && (
+                  <BccTypography
+                    color="#3F0259"
+                    type="p1"
+                    weight="bold"
+                    align="center"
+                    block
+                    mb="24px"
+                  >
+                     {t("block_form.text-1")}
+                  </BccTypography>
+                )}
+                <div className={classes.stepWrap}>
+                  <div className={classes.stepper}>
+                    <div>
+                      {stepSuccess === 1 ? (
+                        <>
+                          <div
+                            onClick={() => setStepSuccess(1)}
+                            className="active"
+                          >
+                            1
+                          </div>
+                          <div></div>
+                          <div onClick={() => setStepSuccess(2)}>2</div>
+                          <div></div>
+                          <div onClick={() => setStepSuccess(3)}>3</div>
+                        </>
+                      ) : stepSuccess === 2 ? (
+                        <>
+                          <div
+                            onClick={() => setStepSuccess(1)}
+                            className="active"
+                          >
+                            1
+                          </div>
+                          <div className="active"></div>
+                          <div
+                            onClick={() => setStepSuccess(2)}
+                            className="active"
+                          >
+                            2
+                          </div>
+                          <div></div>
+                          <div onClick={() => setStepSuccess(3)}>3</div>
+                        </>
+                      ) : (
+                        <>
+                          <div
+                            onClick={() => setStepSuccess(1)}
+                            className="active"
+                          >
+                            1
+                          </div>
+                          <div className="active"></div>
+                          <div
+                            onClick={() => setStepSuccess(2)}
+                            className="active"
+                          >
+                            2
+                          </div>
+                          <div className="active"></div>
+                          <div
+                            onClick={() => setStepSuccess(3)}
+                            className="active"
+                          >
+                            3
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
+                  <div className={classes.stepText}>
+                    <div>
+                      <BccTypography
+                        color="#000000"
+                        type="h4"
+                        block
+                        mb="24px"
+                        className={classes.inTitle}
+                      >
+                         {t("block_form.text-2")}
+                      </BccTypography>
+                      {stepSuccess === 1 ? (
+                        <BccTypography
+                          color="#3F0259"
+                          type="p2l"
+                          block
+                          mb="40px"
+                          className={classes.inSubTitle}
+                        >
+                          {t("block_form.text-3")}
+                        </BccTypography>
+                      ) : stepSuccess === 2 ? (
+                        <BccTypography
+                          color="#3F0259"
+                          type="p2l"
+                          block
+                          mb="36px"
+                          className={classes.inSubTitle}
+                        >
+                          {t("block_form.text-4")}
+                        </BccTypography>
+                      ) : (
+                        <BccTypography
+                          color="#3F0259"
+                          type="p2l"
+                          block
+                          mb="36px"
+                          className={classes.inSubTitle}
+                        >
+                          {t("block_form.text-5")}
+                        </BccTypography>
+                      )}
+                    </div>
+                    <Grid container wrap="nowrap" className={classes.appLinks}>
+                      <Grid item container direction="column">
+                        <img
+                          src={process.env.PUBLIC_URL + "/images/app_store.svg"}
+                          style={{ cursor: "pointer" }}
+                          onClick={(e: any) => onClickAppStore()}
+                        />
+                        <img
+                          src={process.env.PUBLIC_URL + "/images/google_play.svg"}
+                          style={{ cursor: "pointer" }}
+                          onClick={(e: any) => onClickGooglePlay()}
+                        />
+                      </Grid>
+                      <img
+                        className={classes.qr}
+                        src={process.env.PUBLIC_URL + "/images/qr.svg"}
+                      />
+                    </Grid>
+                  </div>
+                  <div className={classes.stepGif}>
+                    <img
+                      className={`${classes.img} ${
+                        stepSuccess === 1
+                          ? `${up ? classes.up : classes.down} ${
+                              classes.visible
+                            } `
+                          : ""
+                      }`}
+                      src={process.env.PUBLIC_URL + `/images/step1.png`}
+                    />
+                    <img
+                      className={`${classes.img} ${
+                        stepSuccess === 2
+                          ? `${up ? classes.up : classes.down} ${
+                              classes.visible
+                            }`
+                          : ""
+                      }`}
+                      src={process.env.PUBLIC_URL + `/images/step2.png`}
+                    />
+                    <img
+                      className={`${classes.img} ${
+                        stepSuccess === 3
+                          ? `${up ? classes.up : classes.down} ${
+                              classes.visible
+                            }`
+                          : ""
+                      }`}
+                      src={process.env.PUBLIC_URL + `/images/step3.png`}
+                    />
+                  </div>
                 </div>
-                <div className={classes.imgBlock}>
-                  <img
-                    className={classes.img}
-                    src="stars_mobile_banking.png"
-                    alt="star_mobile_banking"
-                  />
-                </div>
+              </div>
+            ) : resStatus === 1 ? (
+              <div className={classes.warningForm}>
+                <Grid container wrap="nowrap" justify="space-between">
+                  <Grid item>
+                    <img src={process.env.PUBLIC_URL + "/images/oi.svg"} alt="" />
+                  </Grid>
+                  <Grid item>
+                    <BccTypography type="h3" mb="20px" block>
+                    {t("block_form.text-6")}
+                    </BccTypography>
+                    <BccTypography type="p2l" mb="24px" block>
+                    {t("block_form.text-7")}
+                    </BccTypography>
+                    <Grid container wrap="nowrap" alignItems="center">
+                        <a
+                          href={getWpUrl()}
+                          target="_blank"
+                          style={{ textDecoration: "none" }}
+                        >
+                      <Grid item>
+                        <img src={process.env.PUBLIC_URL + "/images/wp.svg"} alt="" />
+                      </Grid>
+                      <Grid item>
+                          <BccTypography type="h6" block color="initial">
+                            +7 701 223 0228
+                          </BccTypography>
+                      </Grid>
+                        </a>
+                    </Grid>
+                  </Grid>
+                </Grid>
               </div>
             ) : resStatus === 3 ? (
-              <div className={`${classes.successForm} ${classes.warningForm}`}>
-                <img src="warning.svg" alt="" />
-                <div>
-                  {t("block_6.has_main")}
-                  <br />
-                  <br />
-                  {t("block_6.has_main2")}
-                </div>
+              <div className={classes.warningForm}>
+                <Grid container wrap="nowrap" justify="space-between">
+                  <Grid item>
+                    <img src={process.env.PUBLIC_URL + "/images/oi2.svg"} alt="" />
+                  </Grid>
+                  <Grid item>
+                    <BccTypography type="h3" mb="20px" block>
+                    {t("block_form.text-8")}
+                    </BccTypography>
+                    <BccTypography type="p2l" mb="24px" block>
+                    {t("block_form.text-9")}
+                      <br />
+                      <b>{t("block_form.text-10")}</b>
+                    </BccTypography>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  spacing={2}
+                  justify="center"
+                  alignItems="center"
+                  className={classes.social}
+                >
+                  <Grid item>
+                    <BccTypography type="p2" weight="medium">
+                    {t("block_form.text-11")}
+                    </BccTypography>
+                  </Grid>
+                  <Grid item>
+                    <a
+                      href="https://www.instagram.com/centercreditkz"
+                      target="_blank"
+                    >
+                      <img src={process.env.PUBLIC_URL + "/images/ig.svg"} alt="" />
+                    </a>
+                    <a href="https://facebook.com/bcc.kz" target="_blank">
+                      <img src={process.env.PUBLIC_URL + "/images/fb.svg"} alt="" />
+                    </a>
+                    <a
+                      href="https://www.youtube.com/user/bcckz"
+                      target="_blank"
+                    >
+                      <img src={process.env.PUBLIC_URL + "/images/yb.svg"} alt="" />
+                    </a>
+                  </Grid>
+                </Grid>
               </div>
             ) : (
-                          ""
-                        )}
+              ""
+            )}
           </BlockUi>
         </div>
       </Paper>

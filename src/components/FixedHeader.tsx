@@ -155,8 +155,9 @@ const FixedHeader = (props: any) => {
       className={hide ? classes.hide : classes.header}
     >
       <Grid item xl={6} lg={6} md={6} sm={4} xs={3}>
-        <img src="new-logo.svg" className={classes.logo} />
-        <img src="logo-bcc-small.svg" className={classes.small} />
+        <a href="http://bcc.kz/">
+          <img src="new-logo.svg" className={classes.logo} />
+        </a>
       </Grid>
       <Grid item xl={6} lg={6} md={6} sm={8} xs={9}>
         <Grid
@@ -174,7 +175,7 @@ const FixedHeader = (props: any) => {
             xs={3}
             className={classes.smallcard}
           >
-            <img src="icon_card_small.svg" />
+            <img src="images/asset_card_small.svg" />
           </Grid>
           <Grid item xl={3} lg={3} md={6} sm={4} xs={4}>
             <Button

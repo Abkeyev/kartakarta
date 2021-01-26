@@ -44,7 +44,7 @@ const Footer = () => {
         <Grid container className={classes.mainRoot}>
             <Grid container className={classes.root}>
                 <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-                    <Typography className={classes.myFont}>{t('footer.copyright_main')}</Typography>
+                    <Typography className={classes.myFont}>© 2000 - {new Date().getFullYear()} {t('footer.copyright_main')}</Typography>
                     <Typography className={classes.myFont}>{t('footer.copyright_2_main')}</Typography>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>

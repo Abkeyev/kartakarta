@@ -77,11 +77,11 @@ function App() {
       />
       <Banner />
       <BestCard />
-      <OldCardOrder
+      {/* <OldCardOrder
         refProp={oldOrderRef}
         snackUp={(message: string) => snackUp(message)}
         scrollToOrder={scrollToOldOrderRef}
-      />
+      /> */}
       {/* <HowToGetCard /> */}
       <CardOrder
         refProp={orderRef}
